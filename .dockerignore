@@ -1,0 +1,15 @@
+# Environments
+venv
+.vscode
+
+# Cache
+__pycache__
+
+# Database
+*.sqlite3
+
+# Database container files
+db
+
+# Note
+.note

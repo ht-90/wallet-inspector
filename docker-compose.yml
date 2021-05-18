@@ -1,0 +1,35 @@
+# Docker-compose yml version
+version: '3'
+
+# Container information
+services:
+  db:
+    container_name: postgres
+    image: postgres:13.1
+    environment:
+      - PROJECT_ENV=${PROJECT_ENV}
+    env_file:
+      - .env/${PROJECT_ENV}
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    volumes:
+      - ./db/:/var/lib/postgresql/data/
+
+  wallet:
+    container_name: wallet
+    environment:
+      - PROJECT_ENV=${PROJECT_ENV}
+    env_file:
+      - .env/${PROJECT_ENV}
+    build:
+      context: .
+      dockerfile: wallet/Dockerfile
+    image: wallet:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

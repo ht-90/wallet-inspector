@@ -1,0 +1,8 @@
+# Django
+Django
+
+# Database
+psycopg2-binary
+
+# Env management
+python-dotenv
