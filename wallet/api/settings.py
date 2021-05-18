@@ -18,22 +18,18 @@ import dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+# Load project environment
+try:
+    PROJECT_ENV = os.environ["PROJECT_ENV"]
+except:
+    raise KeyError(f"PROJECT_ENV is not set or invalid. See wallet/api/settings.py for a valid value.")
 
 # Load environment file
-PROJECT_ENV = os.environ["PROJECT_ENV"]
+dotenv_file = os.path.join(BASE_DIR, ".env", f"{PROJECT_ENV}")
+dotenv.load_dotenv(dotenv_file)
 
-if PROJECT_ENV == "development":
-    # dotenv_file = os.path.join(BASE_DIR, ".env", f"{PROJECT_ENV}")
-    # dotenv.load_dotenv(dotenv_file)
-    pass
-elif PROJECT_ENV == "production":
-    pass
-else:
-    raise KeyError(f"{PROJECT_ENV} is not valid. See wallet/api/settings.py for a valid value.")
-
-
+# Set secret key and debug settings
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
 if DEBUG == 1:
